@@ -1,17 +1,10 @@
 from fastapi import FastAPI
-from database import get_db_connection
+from routes.auth import router as auth_router
 
 app = FastAPI()
+
+app.include_router(auth_router)
 
 @app.get("/")
 def home():
     return {"message": "StudyMate API is running"}
-
-@app.get("/test-db")
-def test_db():
-    try:
-        conn = get_db_connection()
-        conn.close()
-        return {"message": "Database connected successfully"}
-    except Exception as e:
-        return {"error": str(e)}
