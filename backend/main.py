@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI  # type: ignore
 from routes.auth import router as auth_router
 
 app = FastAPI()
