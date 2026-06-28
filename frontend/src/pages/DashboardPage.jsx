@@ -1,36 +1,82 @@
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 
-function DashboardPage() {
-  const user = JSON.parse(localStorage.getItem("user"));
+import "../styles/Dashboard.css";
 
-  return (
-    <div style={{ display: "flex" }}>
-      <Sidebar />
+function DashboardPage(){
 
-      <div style={{ flex: 1 }}>
-        <Navbar />
+    const user = JSON.parse(localStorage.getItem("user"));
 
-        <div style={{ padding: "40px" }}>
-          <h1>Hello, {user?.name} 👋</h1>
+    return(
 
-          <p>
-            Ready to study today?
-          </p>
+        <div className="dashboard">
 
-          <button>
-            Create New Deck
-          </button>
+            <Sidebar/>
 
-          <h2 style={{ marginTop: "40px" }}>
-            Recent Decks
-          </h2>
+            <div className="content">
 
-          <p>No decks yet.</p>
+                <Navbar/>
+
+                <div className="container">
+
+                    <h1>
+
+                        Welcome Back,
+
+                        {user?.name}
+
+                        👋
+
+                    </h1>
+
+                    <div className="cards">
+
+                        <div className="card">
+
+                            <h2>0</h2>
+
+                            <p>Total Decks</p>
+
+                        </div>
+
+                        <div className="card">
+
+                            <h2>0</h2>
+
+                            <p>Flashcards</p>
+
+                        </div>
+
+                        <div className="card">
+
+                            <h2>0</h2>
+
+                            <p>Study Streak</p>
+
+                        </div>
+
+                    </div>
+
+                    <h2>
+
+                        Recent Decks
+
+                    </h2>
+
+                    <p>
+
+                        You haven't created any decks yet.
+
+                    </p>
+
+                </div>
+
+            </div>
+
         </div>
-      </div>
-    </div>
-  );
+
+    )
+
 }
 
 export default DashboardPage;
