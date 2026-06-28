@@ -1,7 +1,35 @@
 from fastapi import APIRouter, Depends
-
 from database import get_db_connection
 from auth_middleware import verify_token
 from models.deck import Deck
 
 router = APIRouter()
+
+
+@router.post("/decks")
+def create_deck(deck: Deck, payload=Depends(verify_token)):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        INSERT INTO decks
+        (title, description, color, user_id)
+        VALUES (%s, %s, %s, %s)
+        """,
+        (
+            deck.title,
+            deck.description,
+            deck.color,
+            payload["user_id"]
+        )
+    )
+
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    return {
+        "message": "Deck created successfully"
+    }
