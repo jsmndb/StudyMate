@@ -1,31 +1,65 @@
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import api from "../services/api";
 
 import "../styles/Dashboard.css";
 
-function DashboardPage(){
+function DashboardPage() {
 
     const user = JSON.parse(localStorage.getItem("user"));
 
-    return(
+    const [decks, setDecks] = useState([]);
+
+    useEffect(() => {
+
+        fetchDecks();
+
+    }, []);
+
+    const fetchDecks = async () => {
+
+        try {
+
+            const token = localStorage.getItem("token");
+
+            const response = await api.get("/decks", {
+
+                headers: {
+
+                    Authorization: `Bearer ${token}`
+
+                }
+
+            });
+
+            setDecks(response.data);
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+        }
+
+    };
+
+    return (
 
         <div className="dashboard">
 
-            <Sidebar/>
+            <Sidebar />
 
             <div className="content">
 
-                <Navbar/>
+                <Navbar />
 
                 <div className="container">
 
                     <h1>
 
-                        Welcome Back,
-
-                        {user?.name}
-
-                        👋
+                        Welcome Back, {user?.name} 👋
 
                     </h1>
 
@@ -33,41 +67,40 @@ function DashboardPage(){
 
                         <div className="card">
 
-                            <h2>0</h2>
+                            <h2>{decks.length}</h2>
 
                             <p>Total Decks</p>
 
                         </div>
 
-                        <div className="card">
-
-                            <h2>0</h2>
-
-                            <p>Flashcards</p>
-
-                        </div>
-
-                        <div className="card">
-
-                            <h2>0</h2>
-
-                            <p>Study Streak</p>
-
-                        </div>
-
                     </div>
 
-                    <h2>
+                    <h2>My Decks</h2>
 
-                        Recent Decks
+                    {decks.length === 0 ? (
 
-                    </h2>
+                        <p>No decks yet.</p>
 
-                    <p>
+                    ) : (
 
-                        You haven't created any decks yet.
+                        decks.map(deck => (
 
-                    </p>
+                            <div
+                                key={deck.id}
+                                className="card"
+                            >
+
+                                <h3>{deck.title}</h3>
+
+                                <p>{deck.description}</p>
+
+                                <small>{deck.color}</small>
+
+                            </div>
+
+                        ))
+
+                    )}
 
                 </div>
 
@@ -75,7 +108,7 @@ function DashboardPage(){
 
         </div>
 
-    )
+    );
 
 }
 
