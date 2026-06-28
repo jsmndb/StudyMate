@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from routes.auth import router as auth_router
 from auth_middleware import verify_token
+from routes.deck import router as deck_router
 
 app = FastAPI()
 
@@ -18,7 +19,7 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
-
+app.include_router(deck_router)
 
 @app.get("/")
 def home():
