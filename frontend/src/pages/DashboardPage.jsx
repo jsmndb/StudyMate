@@ -11,6 +11,8 @@ function DashboardPage() {
 
     const [decks, setDecks] = useState([]);
 
+    const [search, setSearch] = useState("");
+
     useEffect(() => {
 
         fetchDecks();
@@ -45,6 +47,10 @@ function DashboardPage() {
 
     };
 
+    const filteredDecks = decks.filter((deck) =>
+        deck.title.toLowerCase().includes(search.toLowerCase())
+    );
+
     return (
 
         <div className="dashboard">
@@ -63,42 +69,73 @@ function DashboardPage() {
 
                     </h1>
 
+                    <div className="search-box">
+                        <input
+                            type="text"
+                            placeholder="Search your decks..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                    </div>
+
                     <div className="cards">
 
                         <div className="card">
-
                             <h2>{decks.length}</h2>
-
                             <p>Total Decks</p>
+                        </div>
 
+                        <div className="card">
+                            <h2>0</h2>
+                            <p>Flashcards</p>
+                        </div>
+
+                        <div className="card">
+                            <h2>0%</h2>
+                            <p>Progress</p>
                         </div>
 
                     </div>
 
+                    <div className="deck-header">
+
+                        <h2>My Decks</h2>
+
+                        <button className="create-btn">
+
+                            + New Deck
+
+                        </button>
+
+                    </div>
                     <h2>My Decks</h2>
 
-                    {decks.length === 0 ? (
+                    {filteredDecks.length === 0 ? (
 
                         <p>No decks yet.</p>
 
                     ) : (
 
-                        decks.map(deck => (
+                        <div className="deck-grid">
 
-                            <div
-                                key={deck.id}
-                                className="card"
-                            >
+                            {filteredDecks.map(deck => (
 
-                                <h3>{deck.title}</h3>
+                                <div
+                                    key={deck.id}
+                                    className="deck-card"
+                                >
 
-                                <p>{deck.description}</p>
+                                    <h3>{deck.title}</h3>
 
-                                <small>{deck.color}</small>
+                                    <p>{deck.description}</p>
 
-                            </div>
+                                    <small>{deck.color}</small>
 
-                        ))
+                                </div>
+
+                            ))}
+
+                        </div>
 
                     )}
 
