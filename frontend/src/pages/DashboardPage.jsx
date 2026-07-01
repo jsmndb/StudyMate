@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import api from "../services/api";
-
+import CreateDeckModal from "../components/CreateDeckModal";
 import "../styles/Dashboard.css";
 
 function DashboardPage() {
@@ -12,6 +12,8 @@ function DashboardPage() {
     const [decks, setDecks] = useState([]);
 
     const [search, setSearch] = useState("");
+
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
 
@@ -101,10 +103,11 @@ function DashboardPage() {
 
                         <h2>My Decks</h2>
 
-                        <button className="create-btn">
-
+                        <button
+                            className="create-btn"
+                            onClick={() => setShowModal(true)}
+                        >
                             + New Deck
-
                         </button>
 
                     </div>
@@ -143,7 +146,15 @@ function DashboardPage() {
 
             </div>
 
-        </div>
+            {
+                showModal && (
+                    <CreateDeckModal
+                        closeModal={() => setShowModal(false)}
+                        refreshDecks={fetchDecks}
+                    />
+                )
+            }
+                    </div>
 
     );
 
